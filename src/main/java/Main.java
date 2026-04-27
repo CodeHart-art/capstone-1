@@ -1,6 +1,7 @@
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -22,25 +23,61 @@ public class Main {
            switch (userInput){
                case "a", "A":
 
-                   System.out.print("Enter Transaction date(YYYY-MM-DD): ");
-                   String inputDate = scanner.nextLine();
+                   while (true){
+                       System.out.print("Enter Transaction date(YYYY-MM-DD): ");
+                       String inputDate = scanner.nextLine();
 
+                       try {
+                           LocalDate date = LocalDate.parse(inputDate);
+                           break;
 
-
-                   try {
-                       FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv",true);
-                       BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
-                       bufferedWriter.newLine();
-                       bufferedWriter.write();
-
-
-
-                        bufferedWriter.close();
-                   } catch (IOException e) {
-                       System.out.println();
-                       throw new RuntimeException(e);
+                       } catch (DateTimeParseException e) {
+                           System.out.println("INCORRECT FORMAT ENTER(YYYY-MM-DD)");
+                       }
                    }
+                   while (true){
+                       System.out.print("Enter Transaction time(HH:mm:ss): ");
+                       String inputTime = scanner.nextLine();
+
+                       try {
+                           LocalTime time = LocalTime.parse(inputTime);
+                           break;
+                       }catch (DateTimeParseException e){
+                           System.out.println("INCORRECT FORMAT PLEASE ENTER(HH:MM:SS)");
+                       }
+                   }
+
+                   System.out.print("Please enter short description of deposit: ");
+                   String description = scanner.nextLine();
+
+                   System.out.print("Enter Vendor name: ");
+                   String vendor = scanner.nextLine();
+
+                   System.out.println("Enter amount deposited: ");
+                   double depositedAmount = scanner.nextDouble();
+                   scanner.nextLine();
+                   if (depositedAmount < 0){
+                       depositedAmount *= -1;
+                       System.out.println(depositedAmount);
+                   }
+
+
+
+
+//                   try {
+//                       FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv",true);
+//                       BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+//
+//                       bufferedWriter.newLine();
+//                       bufferedWriter.write();
+//
+//
+//
+//                        bufferedWriter.close();
+//                   } catch (IOException e) {
+//                       System.err.print("Error Writing File");
+//                       throw new RuntimeException(e);
+//                   }
 
                    break;
                case "b","B":
@@ -58,6 +95,7 @@ public class Main {
 
     }
 
+    // Reads and returns transaction.csv
     private static ArrayList<Transaction> transactionList() {
         ArrayList<Transaction> transactions = new ArrayList<>();
 
