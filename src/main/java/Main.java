@@ -1,6 +1,7 @@
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -9,8 +10,10 @@ public class Main {
     public static void main(String[] args) {
        ArrayList<Transaction> transactions = transactionList();
         Scanner scanner = new Scanner(System.in);
+        double moneyTransferred;
+        String fullTransactionInfo;
 
-       while (true){
+        while (true){
            System.out.print("""
                    Welcome to BlackFire Accounting
                    A) Add a deposit
@@ -22,36 +25,41 @@ public class Main {
 
            switch (userInput){
                case "a", "A":
-
-                   System.out.println("Enter amount deposited: ");
-                   double depositedAmount = scanner.nextDouble();
+                   System.out.print("Enter amount deposited: ");
+                   moneyTransferred = scanner.nextDouble();
                    scanner.nextLine();
-                   if (depositedAmount < 0){
-                       depositedAmount *= -1;
+                   if (moneyTransferred < 0){
+                       moneyTransferred *= -1;
                    }
 
-                   String fullTransactionInfo = transactionInfo(scanner) + depositedAmount;
+                   fullTransactionInfo = transactionInfo(scanner) + moneyTransferred;
 
-
-                   try {
-                       FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv",true);
-                       BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
-                       bufferedWriter.newLine();
-                       bufferedWriter.write(fullTransactionInfo);
-                       System.out.println("Your info has been processed");
-
-
-
-                        bufferedWriter.close();
-                   } catch (IOException e) {
-                       System.err.print("Error Writing File");
-                       throw new RuntimeException(e);
-                   }
+                   transactionWriter(fullTransactionInfo);
 
                    break;
                case "b","B":
+                   System.out.println("Enter Payment: ");
+                   moneyTransferred = scanner.nextDouble();
+                   scanner.nextLine();
+                   if (moneyTransferred > 0){
+                       moneyTransferred *= -1;
+                   }
+
+                   fullTransactionInfo = transactionInfo(scanner) + moneyTransferred;
+
+                   transactionWriter(fullTransactionInfo);
+
                    break;
+               case "c","C":
+                   System.out.print("""
+                           Select How to display your Transactions
+                           1) Month to date
+                           2) Previous month
+                           3) Year to date
+                           4) Previous year
+                           5) Search by vendor:""");
+
+
                case "x","X":
                    System.err.println("EXITING PROGRAM...");
                    System.exit(0);
@@ -64,8 +72,28 @@ public class Main {
 
 
     }
+    // Writes transactions to csv
+    private static void transactionWriter(String fullTransactionInfo) {
+        try {
+            FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv",true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
+            bufferedWriter.newLine();
+            bufferedWriter.write(fullTransactionInfo);
+            System.out.println("Your info has been processed");
+
+
+
+             bufferedWriter.close();
+        } catch (IOException e) {
+            System.err.print("Error Writing File");
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Reads and returns Date,Time,Description,VendorName
     private static String transactionInfo(Scanner scanner) {
+
         LocalDate date = null;
         while (true){
             System.out.print("Enter Transaction date(YYYY-MM-DD): ");
@@ -79,13 +107,18 @@ public class Main {
                 System.out.println("INCORRECT FORMAT ENTER(YYYY-MM-DD)");
             }
         }
+
         LocalTime time = null;
+        String outPutTime;
         while (true){
             System.out.print("Enter Transaction time(HH:mm:ss): ");
             String inputTime = scanner.nextLine();
             
             try {
+
                 time = LocalTime.parse(inputTime);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                outPutTime = time.format(formatter);
                 break;
             }catch (DateTimeParseException e){
                 System.out.println("INCORRECT FORMAT PLEASE ENTER(HH:mm:ss)");
@@ -99,13 +132,11 @@ public class Main {
         String vendor = scanner.nextLine();
         
         String stringDate = date.toString();
-        String stringTime = time.toString();
 
-
-        return stringDate+ "|" + stringTime + "|" + description + "|" + vendor + "|";
+        return stringDate+ "|" + outPutTime + "|" + description + "|" + vendor + "|";
     }
 
-    // Reads and returns transaction.csv
+    // Reads and returns transactions from csv
     private static ArrayList<Transaction> transactionList() {
         ArrayList<Transaction> transactions = new ArrayList<>();
 
