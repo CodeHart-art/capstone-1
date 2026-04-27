@@ -23,61 +23,31 @@ public class Main {
            switch (userInput){
                case "a", "A":
 
-                   while (true){
-                       System.out.print("Enter Transaction date(YYYY-MM-DD): ");
-                       String inputDate = scanner.nextLine();
-
-                       try {
-                           LocalDate date = LocalDate.parse(inputDate);
-                           break;
-
-                       } catch (DateTimeParseException e) {
-                           System.out.println("INCORRECT FORMAT ENTER(YYYY-MM-DD)");
-                       }
-                   }
-                   while (true){
-                       System.out.print("Enter Transaction time(HH:mm:ss): ");
-                       String inputTime = scanner.nextLine();
-
-                       try {
-                           LocalTime time = LocalTime.parse(inputTime);
-                           break;
-                       }catch (DateTimeParseException e){
-                           System.out.println("INCORRECT FORMAT PLEASE ENTER(HH:MM:SS)");
-                       }
-                   }
-
-                   System.out.print("Please enter short description of deposit: ");
-                   String description = scanner.nextLine();
-
-                   System.out.print("Enter Vendor name: ");
-                   String vendor = scanner.nextLine();
-
                    System.out.println("Enter amount deposited: ");
                    double depositedAmount = scanner.nextDouble();
                    scanner.nextLine();
                    if (depositedAmount < 0){
                        depositedAmount *= -1;
-                       System.out.println(depositedAmount);
                    }
 
+                   String fullTransactionInfo = transactionInfo(scanner) + depositedAmount;
+
+
+                   try {
+                       FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv",true);
+                       BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+                       bufferedWriter.newLine();
+                       bufferedWriter.write(fullTransactionInfo);
+                       System.out.println("Your info has been processed");
 
 
 
-//                   try {
-//                       FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv",true);
-//                       BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-//
-//                       bufferedWriter.newLine();
-//                       bufferedWriter.write();
-//
-//
-//
-//                        bufferedWriter.close();
-//                   } catch (IOException e) {
-//                       System.err.print("Error Writing File");
-//                       throw new RuntimeException(e);
-//                   }
+                        bufferedWriter.close();
+                   } catch (IOException e) {
+                       System.err.print("Error Writing File");
+                       throw new RuntimeException(e);
+                   }
 
                    break;
                case "b","B":
@@ -93,6 +63,46 @@ public class Main {
        }
 
 
+    }
+
+    private static String transactionInfo(Scanner scanner) {
+        LocalDate date = null;
+        while (true){
+            System.out.print("Enter Transaction date(YYYY-MM-DD): ");
+            String inputDate = scanner.nextLine();
+            
+            try {
+                date = LocalDate.parse(inputDate);
+                break;
+
+            } catch (DateTimeParseException e) {
+                System.out.println("INCORRECT FORMAT ENTER(YYYY-MM-DD)");
+            }
+        }
+        LocalTime time = null;
+        while (true){
+            System.out.print("Enter Transaction time(HH:mm:ss): ");
+            String inputTime = scanner.nextLine();
+            
+            try {
+                time = LocalTime.parse(inputTime);
+                break;
+            }catch (DateTimeParseException e){
+                System.out.println("INCORRECT FORMAT PLEASE ENTER(HH:mm:ss)");
+            }
+        }
+
+        System.out.print("Please enter short description of deposit: ");
+        String description = scanner.nextLine();
+
+        System.out.print("Enter Vendor name: ");
+        String vendor = scanner.nextLine();
+        
+        String stringDate = date.toString();
+        String stringTime = time.toString();
+
+
+        return stringDate+ "|" + stringTime + "|" + description + "|" + vendor + "|";
     }
 
     // Reads and returns transaction.csv
