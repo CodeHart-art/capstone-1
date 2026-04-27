@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -15,14 +13,35 @@ public class Main {
            System.out.print("""
                    Welcome to BlackFire Accounting
                    A) Add a deposit
-                   B) Add a payment
+                   B) Make a payment
+                   C) Open Ledger
                    X) Exit
-                   Select an option:
-                   """);
+                   Select an option:""");
            String userInput = scanner.nextLine();
 
            switch (userInput){
                case "a", "A":
+
+                   System.out.print("Enter Transaction date(YYYY-MM-DD): ");
+                   String inputDate = scanner.nextLine();
+
+
+
+                   try {
+                       FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv",true);
+                       BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+                       bufferedWriter.newLine();
+                       bufferedWriter.write();
+
+
+
+                        bufferedWriter.close();
+                   } catch (IOException e) {
+                       System.out.println();
+                       throw new RuntimeException(e);
+                   }
+
                    break;
                case "b","B":
                    break;
