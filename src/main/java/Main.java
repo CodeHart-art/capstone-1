@@ -4,11 +4,37 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
        ArrayList<Transaction> transactions = transactionList();
+        Scanner scanner = new Scanner(System.in);
 
+       while (true){
+           System.out.print("""
+                   Welcome to BlackFire Accounting
+                   A) Add a deposit
+                   B) Add a payment
+                   X) Exit
+                   Select an option:
+                   """);
+           String userInput = scanner.nextLine();
+
+           switch (userInput){
+               case "a", "A":
+                   break;
+               case "b","B":
+                   break;
+               case "x","X":
+                   System.err.println("EXITING PROGRAM...");
+                   System.exit(0);
+               default:
+                   System.err.println("INVALID INPUT TRY AGAIN");
+           }
+
+
+       }
 
 
     }
