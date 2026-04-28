@@ -53,11 +53,69 @@ public class Main {
                case "c","C":
                    System.out.print("""
                            Select How to display your Transactions
-                           1) Month to date
-                           2) Previous month
-                           3) Year to date
-                           4) Previous year
-                           5) Search by vendor:""");
+                           1) Display all
+                           2) Month to date
+                           3) Previous month
+                           4) Year to date
+                           5) Previous year
+                           6) Search by vendor:""");
+                   userInput = scanner.nextLine();
+
+
+                  LocalDate today = LocalDate.now();
+                   //First of the month
+                   LocalDate start = today.withDayOfMonth(1);
+                   //End of search
+                   LocalDate end = today;
+
+                   switch (userInput){
+                       case "2":
+
+                           //Month to date search
+                           for (Transaction t : transactions){
+                               if (!t.transactionDate.isBefore(start) && !t.transactionDate.isAfter(end)){
+                                   System.out.println(t);
+                               }
+                           }
+                           break;
+                       case "3":
+
+                            // Previous month search
+                           start = today.withDayOfMonth(1).minusMonths(1);
+                           end = today.withDayOfMonth(1).minusDays(1);
+                           for (Transaction t : transactions){
+                               if (!t.transactionDate.isBefore(start) && !t.transactionDate.isAfter(end)){
+                                   System.out.println(t);
+                               }
+                           }
+                           break;
+                       case "4":
+
+                           //Year to date search
+                           start = today.withDayOfYear(1);
+                           for (Transaction t : transactions){
+                               if (!t.transactionDate.isBefore(start) && !t.transactionDate.isAfter(end)){
+                                   System.out.println(t);
+                               }
+                           }
+
+                           break;
+                       case "5":
+                           //Previous year search
+                           start = today.minusYears(1).withDayOfYear(1);
+                           end = today.minusYears(1).withMonth(12).withDayOfMonth(31);
+                           for (Transaction t : transactions){
+                               if (!t.transactionDate.isBefore(start) && !t.transactionDate.isAfter(end)){
+                                   System.out.println(t);
+                               }
+                           }
+                           break;
+                       case "6":
+                           //Search by vendor
+
+                           break;
+                   }
+
 
 
                case "x","X":
