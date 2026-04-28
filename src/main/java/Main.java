@@ -51,86 +51,8 @@ public class Main {
 
                    break;
                case "c":
-                   System.out.print("""
-                           Select How to display your Transactions
-                           1) Month to date
-                           2) Previous month
-                           3) Year to date
-                           4) Previous year
-                           5) Search by vendor
-                           0) Return to menu:""");
-                   userInput = scanner.nextLine();
-
-                   //Anchor for searches
-                  LocalDate today = LocalDate.now();
-                   //First of the month
-                   LocalDate start = today.withDayOfMonth(1);
-                   //End of search
-                   LocalDate end = today;
-
-
-                   boolean active = true;
-                   while (active){
-                   switch (userInput){
-                       case "1":
-
-                           //Month to date search
-                           for (Transaction t : transactions){
-                               if (!t.transactionDate.isBefore(start) && !t.transactionDate.isAfter(end)){
-                                   System.out.println(t);
-                               }
-                           }
-                           break;
-                       case "2":
-
-                            // Previous month search
-                           start = today.withDayOfMonth(1).minusMonths(1);
-                           end = today.withDayOfMonth(1).minusDays(1);
-                           for (Transaction t : transactions){
-                               if (!t.transactionDate.isBefore(start) && !t.transactionDate.isAfter(end)){
-                                   System.out.println(t);
-                               }
-                           }
-                           break;
-                       case "3":
-
-                           //Year to date search
-                           start = today.withDayOfYear(1);
-                           for (Transaction t : transactions){
-                               if (!t.transactionDate.isBefore(start) && !t.transactionDate.isAfter(end)){
-                                   System.out.println(t);
-                               }
-                           }
-                           break;
-                       case "4":
-
-                           //Previous year search
-                           start = today.minusYears(1).withDayOfYear(1);
-                           end = today.minusYears(1).withMonth(12).withDayOfMonth(31);
-                           for (Transaction t : transactions){
-                               if (!t.transactionDate.isBefore(start) && !t.transactionDate.isAfter(end)){
-                                   System.out.println(t);
-                               }
-                           }
-                           break;
-                       case "5":
-
-                           //Search by vendor
-                           System.out.println("Enter Vendor Name: ");
-                           userInput = scanner.nextLine();
-                           for (Transaction t : transactions){
-                               if (t.vendor.toLowerCase().contains(userInput.toLowerCase())){
-                                   System.out.println(t);
-                               }
-                           }
-                           break;
-                       case "0":
-                           active = false;
-                       default:
-                           System.out.println("ENTER CORRECT OPTION");
-                   }
-                    }
-
+                   ledgerMenu(scanner, transactions);
+                   break;
 
 
                case "x":
@@ -145,6 +67,94 @@ public class Main {
 
 
     }
+
+    private static void ledgerMenu(Scanner scanner, ArrayList<Transaction> transactions) {
+
+
+        //Anchor for searches
+        LocalDate today = LocalDate.now();
+        //First of the month
+        LocalDate start = today.withDayOfMonth(1);
+        //End of search
+        LocalDate end = today;
+
+
+        boolean active = true;
+        while (active){
+
+            String userInput;
+            System.out.print("""
+                Select How to display your Transactions
+                1) Month to date
+                2) Previous month
+                3) Year to date
+                4) Previous year
+                5) Search by vendor
+                0) Return to menu:""");
+            userInput = scanner.nextLine();
+
+        switch (userInput){
+            case "1":
+
+                //Month to date search
+                for (Transaction t : transactions){
+                    if (!t.transactionDate.isBefore(start) && !t.transactionDate.isAfter(end)){
+                        System.out.println(t);
+                    }
+                }
+                break;
+            case "2":
+
+                 // Previous month search
+                start = today.withDayOfMonth(1).minusMonths(1);
+                end = today.withDayOfMonth(1).minusDays(1);
+                for (Transaction t : transactions){
+                    if (!t.transactionDate.isBefore(start) && !t.transactionDate.isAfter(end)){
+                        System.out.println(t);
+                    }
+                }
+                break;
+            case "3":
+
+                //Year to date search
+                start = today.withDayOfYear(1);
+                for (Transaction t : transactions){
+                    if (!t.transactionDate.isBefore(start) && !t.transactionDate.isAfter(end)){
+                        System.out.println(t);
+                    }
+                }
+                break;
+            case "4":
+
+                //Previous year search
+                start = today.minusYears(1).withDayOfYear(1);
+                end = today.minusYears(1).withMonth(12).withDayOfMonth(31);
+                for (Transaction t : transactions){
+                    if (!t.transactionDate.isBefore(start) && !t.transactionDate.isAfter(end)){
+                        System.out.println(t);
+                    }
+                }
+                break;
+            case "5":
+
+                //Search by vendor
+                System.out.println("Enter Vendor Name: ");
+                userInput = scanner.nextLine();
+                for (Transaction t : transactions){
+                    if (t.vendor.toLowerCase().contains(userInput.toLowerCase())){
+                        System.out.println(t);
+                    }
+                }
+                break;
+            case "0":
+                active = false;
+                break;
+            default:
+                System.out.println("ENTER CORRECT OPTION");
+        }
+         }
+    }
+
     // Writes transactions to csv
     private static void transactionWriter(String fullTransactionInfo) {
         try {
