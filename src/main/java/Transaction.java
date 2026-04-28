@@ -3,11 +3,31 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class Transaction {
-    LocalDate transactionDate;
-    LocalTime transactionTime;
-    String description;
-    String vendor;
-    double transactionAmount;
+    public LocalDate getTransactionDate() {
+        return transactionDate;
+    }
+
+    public LocalTime getTransactionTime() {
+        return transactionTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getVendor() {
+        return vendor;
+    }
+
+    public double getTransactionAmount() {
+        return transactionAmount;
+    }
+
+    private LocalDate transactionDate;
+    private LocalTime transactionTime;
+    private String description;
+    private String vendor;
+    private double transactionAmount;
 
     public Transaction(LocalDate transactionDate, LocalTime transactionTime, String description, String vendor, double transactionAmount) {
         this.transactionDate = transactionDate;
