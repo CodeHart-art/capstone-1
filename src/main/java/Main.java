@@ -23,8 +23,8 @@ public class Main {
                    Select an option:""");
            String userInput = scanner.nextLine();
 
-           switch (userInput){
-               case "a", "A":
+           switch (userInput.toLowerCase()){
+               case "a":
                    System.out.print("Enter amount deposited: ");
                    moneyTransferred = scanner.nextDouble();
                    scanner.nextLine();
@@ -37,7 +37,7 @@ public class Main {
                    transactionWriter(fullTransactionInfo);
 
                    break;
-               case "b","B":
+               case "b":
                    System.out.println("Enter Payment: ");
                    moneyTransferred = scanner.nextDouble();
                    scanner.nextLine();
@@ -50,26 +50,29 @@ public class Main {
                    transactionWriter(fullTransactionInfo);
 
                    break;
-               case "c","C":
+               case "c":
                    System.out.print("""
                            Select How to display your Transactions
-                           1) Display all
-                           2) Month to date
-                           3) Previous month
-                           4) Year to date
-                           5) Previous year
-                           6) Search by vendor:""");
+                           1) Month to date
+                           2) Previous month
+                           3) Year to date
+                           4) Previous year
+                           5) Search by vendor
+                           0) Return to menu:""");
                    userInput = scanner.nextLine();
 
-
+                   //Anchor for searches
                   LocalDate today = LocalDate.now();
                    //First of the month
                    LocalDate start = today.withDayOfMonth(1);
                    //End of search
                    LocalDate end = today;
 
+
+                   boolean active = true;
+                   while (active){
                    switch (userInput){
-                       case "2":
+                       case "1":
 
                            //Month to date search
                            for (Transaction t : transactions){
@@ -78,7 +81,7 @@ public class Main {
                                }
                            }
                            break;
-                       case "3":
+                       case "2":
 
                             // Previous month search
                            start = today.withDayOfMonth(1).minusMonths(1);
@@ -89,7 +92,7 @@ public class Main {
                                }
                            }
                            break;
-                       case "4":
+                       case "3":
 
                            //Year to date search
                            start = today.withDayOfYear(1);
@@ -98,9 +101,9 @@ public class Main {
                                    System.out.println(t);
                                }
                            }
-
                            break;
-                       case "5":
+                       case "4":
+
                            //Previous year search
                            start = today.minusYears(1).withDayOfYear(1);
                            end = today.minusYears(1).withMonth(12).withDayOfMonth(31);
@@ -110,15 +113,27 @@ public class Main {
                                }
                            }
                            break;
-                       case "6":
+                       case "5":
+
                            //Search by vendor
-
+                           System.out.println("Enter Vendor Name: ");
+                           userInput = scanner.nextLine();
+                           for (Transaction t : transactions){
+                               if (t.vendor.toLowerCase().contains(userInput.toLowerCase())){
+                                   System.out.println(t);
+                               }
+                           }
                            break;
+                       case "0":
+                           active = false;
+                       default:
+                           System.out.println("ENTER CORRECT OPTION");
                    }
+                    }
 
 
 
-               case "x","X":
+               case "x":
                    System.err.println("EXITING PROGRAM...");
                    System.exit(0);
                default:

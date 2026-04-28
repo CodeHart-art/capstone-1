@@ -10,7 +10,7 @@ date|time|description|vendor|amount
 2025-06-14|03:05:09|Food reimbursement|Guild Client|215.00
 2025-07-19|07:22:45|Team lunch|The Pawned Prawn|-63.80
 2025-08-08|07:59:59|Equipment sale|Riften Marketplace|1500.00
-2025-09-30|12:00:00|Oil bill|Guild Utilities|-122.18
+2025-09-30|12:00:00|Lamp oil bill|Guild Utilities|-122.18
 2025-10-21|02:25:33|Commission bonus|Red Guild Bank|500.00
 2025-11-11|09:09:09|Phoenix renewal scroll|Mortar and Pestle|-21.17
 2025-12-31|11:50:00|Year-end adjustment|Hearthblood Bank|300.00
@@ -27,4 +27,4 @@ date|time|description|vendor|amount
 2026-04-12|05:30:45|Tax refund|IRS|420.17
 2026-04-18|11:22:33|Client lunch|Silver Tavern|-28.60
 2026-04-22|03:55:10|Hilt Jewel|Blackfire Smithing|-444.95
-2026-04-24|10:05:00|Emergency consulting payment|Acme Client|675.00
+2026-04-24|10:05:00|Emergency consulting payment|Mage Cafe|675.00
