@@ -18,7 +18,7 @@ BlackFire Ledger is a simple Java-based console application that allows users to
 
 ## Example Usage
 
-![img.png](img.png)
+![img.png](src/main/resources/img.png)
 
 ## Technologies Used
 - Java
@@ -26,6 +26,9 @@ BlackFire Ledger is a simple Java-based console application that allows users to
 ## Future Improvement Ideas
 - Add a GUI
 - Implement Advanced search filters
+
+## Challenging Code
+
 
 ## Author
 John Hart

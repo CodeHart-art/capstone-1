@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.Scanner;
 
 public class Main {
-    public static String TRANSACTIONS_CSV = "src/main/resources/transactions.csv";
+    public static final String TRANSACTIONS_CSV = "src/main/resources/transactions.csv";
 
     public static void main(String[] args) {
         ArrayList<Transaction> transactions = transactionList();
@@ -37,7 +37,6 @@ public class Main {
                     }
 
                     fullTransactionInfo = transactionInfo(scanner) + moneyTransferred;
-
                     transactionWriter(fullTransactionInfo);
 
                     break;
@@ -51,7 +50,6 @@ public class Main {
                     }
 
                     fullTransactionInfo = transactionInfo(scanner) + moneyTransferred;
-
                     transactionWriter(fullTransactionInfo);
 
                     break;
@@ -66,11 +64,7 @@ public class Main {
                 default:
                     System.err.println("INVALID INPUT TRY AGAIN");
             }
-
-
         }
-
-
     }
 
     // displays ledger menu options
@@ -168,11 +162,12 @@ public class Main {
                 case "2":
                     // Previous month search
 
-                    int lastMonth = today.minusMonths(1).getMonthValue();
+                    int lastMonth = today.getMonthValue() - 1;
+                    int sameYear = today.getYear();
 
                     System.out.println("-----");
                     for (Transaction t : transactions) {
-                        if (t.getTransactionDate().getMonthValue() == lastMonth) {
+                        if (t.getTransactionDate().getMonthValue() == lastMonth && t.getTransactionDate().getYear() == sameYear) {
                             formattedMenuDisplay(t);
                         }
                     }
@@ -280,7 +275,6 @@ public class Main {
         String vendor = scanner.nextLine();
 
         String stringDate = date.toString();
-
         return stringDate + "|" + outPutTime + "|" + description + "|" + vendor + "|";
     }
 
@@ -292,7 +286,6 @@ public class Main {
             FileReader fileReader = new FileReader(TRANSACTIONS_CSV);
             BufferedReader buffReader = new BufferedReader(fileReader);
 
-
             String line;
             buffReader.readLine();
             while ((line = buffReader.readLine()) != null) {
@@ -302,8 +295,6 @@ public class Main {
                 Transaction transaction = new Transaction(LocalDate.parse(transactionInfo[0]), LocalTime.parse(transactionInfo[1]), transactionInfo[2], transactionInfo[3], Double.parseDouble(transactionInfo[4]));
                 transactions.add(transaction);
             }
-
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -3,6 +3,20 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class Transaction {
+    private  LocalDate transactionDate;
+    private final LocalTime transactionTime;
+    private final String description;
+    private final String vendor;
+    private final double transactionAmount;
+
+    public Transaction(LocalDate transactionDate, LocalTime transactionTime, String description, String vendor, double transactionAmount) {
+        this.transactionDate = transactionDate;
+        this.transactionTime = transactionTime;
+        this.description = description;
+        this.vendor = vendor;
+        this.transactionAmount = transactionAmount;
+    }
+
     public LocalDate getTransactionDate() {
         return transactionDate;
     }
@@ -21,20 +35,6 @@ public class Transaction {
 
     public double getTransactionAmount() {
         return transactionAmount;
-    }
-
-    private final LocalDate transactionDate;
-    private final LocalTime transactionTime;
-    private final String description;
-    private final String vendor;
-    private final double transactionAmount;
-
-    public Transaction(LocalDate transactionDate, LocalTime transactionTime, String description, String vendor, double transactionAmount) {
-        this.transactionDate = transactionDate;
-        this.transactionTime = transactionTime;
-        this.description = description;
-        this.vendor = vendor;
-        this.transactionAmount = transactionAmount;
     }
 
     @Override
