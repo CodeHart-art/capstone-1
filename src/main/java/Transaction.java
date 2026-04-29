@@ -23,11 +23,11 @@ public class Transaction {
         return transactionAmount;
     }
 
-    private LocalDate transactionDate;
-    private LocalTime transactionTime;
-    private String description;
-    private String vendor;
-    private double transactionAmount;
+    private final LocalDate transactionDate;
+    private final LocalTime transactionTime;
+    private final String description;
+    private final String vendor;
+    private final double transactionAmount;
 
     public Transaction(LocalDate transactionDate, LocalTime transactionTime, String description, String vendor, double transactionAmount) {
         this.transactionDate = transactionDate;
