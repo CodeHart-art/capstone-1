@@ -26,9 +26,11 @@ BlackFire Ledger is a simple Java-based console application that allows users to
 ## Future Improvement Ideas
 - Add a GUI
 - Implement Advanced search filters
+- add more defensive coding
 
 ## Challenging Code
-
+-Debugging date-range logic was tricky—small mistakes in conditions caused entire ranges of transactions to appear unintended or completely miss the mark.
+![img.png](src/main/resources/challengeImg.png)
 
 ## Author
 John Hart

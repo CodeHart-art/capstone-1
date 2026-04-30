@@ -8,6 +8,11 @@ import java.util.Comparator;
 import java.util.Scanner;
 
 public class Main {
+    public static final String RESET = "\u001B[0m";
+    public static final String GOLD = "\u001B[33m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String RED = "\u001B[31m";
+    public static final String CYAN = "\u001B[36m";
     public static final String TRANSACTIONS_CSV = "src/main/resources/transactions.csv";
 
     public static void main(String[] args) {
@@ -17,13 +22,18 @@ public class Main {
         String fullTransactionInfo;
 
         while (true) {
-            System.out.print("""
-                    Welcome to BlackFire Accounting
-                    A) Add a deposit
-                    B) Make a payment
-                    C) Open Ledger
-                    X) Exit
-                    Select an option:""");
+            System.out.print(CYAN + """
+                    ╔══════════════════════════════════╗
+                    ║      ⚔️ BlackFire Ledger ⚔️      ║
+                    ╚══════════════════════════════════╝
+                    
+                    [A] 🪙 Record Tribute (Deposit)
+                    [B] 💸 Pay a Debt (Payment)
+                    [C] 📜 View the Ledger
+                    
+                    [X] 🚪 Leave the Hall
+                    
+                    ➤ Choose thy action:""" + RESET);
             String userInput = scanner.nextLine();
 
             switch (userInput.toLowerCase()) {
@@ -73,27 +83,28 @@ public class Main {
         boolean active = true;
         while (active) {
 
-            System.out.println("-----");
-            System.out.print("""
-                    Select display options
-                    A) All entries
-                    D) Deposits
-                    P) Payments
-                    R) Reports
-                    M) Return to Main Menu
-                    Please enter option:""");
+            System.out.print(GOLD +"""
+                    ----- 📜 Ledger Archives 📜 -----
+                    
+                    [A] All Records
+                    [D] Deposits (Tributes)
+                    [P] Payments (Debts)
+                    [R] Reports of the Realm
+                    [M] Return to the Great Hall
+                    
+                    ➤ Choose thy record:"""+ RESET);
             userInput = scanner.nextLine();
 
             switch (userInput.toLowerCase()) {
                 case "a":
-                    System.out.println("-----");
+                    ledgerHeading();
                     transactions.sort(Comparator.comparing(Transaction::getTransactionDate));
                     for (Transaction t : transactions) {
                         formattedMenuDisplay(t);
                     }
                     break;
                 case "d":
-                    System.out.println("-----");
+                    ledgerHeading();
                     for (Transaction t : transactions) {
                         if (t.getTransactionAmount() > 0) {
                             formattedMenuDisplay(t);
@@ -101,7 +112,7 @@ public class Main {
                     }
                     break;
                 case "p":
-                    System.out.println("-----");
+                    ledgerHeading();
                     for (Transaction t : transactions) {
                         if (t.getTransactionAmount() < 0) {
                             formattedMenuDisplay(t);
@@ -118,11 +129,38 @@ public class Main {
         }
     }
 
+    private static void ledgerHeading(){
+        System.out.println(                 "────── 📜 Royal Ledger 📜 ──────");
+
+        System.out.printf("%-15s %-15s %-30s %-30s %-11s%n",
+                "Date",
+                "Time",
+                "Description",
+                "Guild/Vendor",
+                "Gold"
+        );
+
+        System.out.println( "-----------------------------------------------------------------------------------------------");
+    }
+
     private static void formattedMenuDisplay(Transaction t) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String outPutTime = t.getTransactionTime().format(formatter);
 
-        System.out.printf("%-15s %-15s %-30s %-30s $%-10s%n", t.getTransactionDate(), outPutTime, t.getDescription(), t.getVendor(), t.getTransactionAmount());
+        String amountStr;
+
+        if (t.getTransactionAmount() > 0) {
+            amountStr = GREEN + String.format("%.2f", t.getTransactionAmount()) + RESET;
+        } else {
+            amountStr = RED + String.format("%.2f", t.getTransactionAmount()) + RESET;
+        }
+
+        System.out.printf("%-15s %-15s %-30s %-30s $%-10s%n",
+                t.getTransactionDate(),
+                outPutTime,
+                t.getDescription(),
+                t.getVendor(),
+                amountStr);
     }
 
     // displays report menu options
@@ -136,15 +174,18 @@ public class Main {
         while (active) {
 
             String userInput;
-            System.out.println("-----");
-            System.out.print("""
-                    Select How to display your Transactions
-                    1) Month to date
-                    2) Previous month
-                    3) Year to date
-                    4) Previous year
-                    5) Search by vendor
-                    0) Return to menu:""");
+            System.out.print(GOLD + """
+                    ════════════════════════════════════
+                            📜 Reports of the Realm 📜
+                    ════════════════════════════════════
+                    [1] 🗓️  Records of the Current Month
+                    [2] 🕰️  Records of the Previous Month
+                    [3] 📆  Records of the Current Year
+                    [4] 🏛️  Records of the Previous Year
+                    
+                    [5] 🔎 Seek Records by Vendor
+                    
+                    [0] 🚪 Return to the Great Hall:"""+ RESET);
             userInput = scanner.nextLine();
 
             switch (userInput) {
@@ -152,7 +193,7 @@ public class Main {
                     int thisMonth = today.getMonthValue();
 
                     //Month to date search
-                    System.out.println("-----");
+                    ledgerHeading();
                     for (Transaction t : transactions) {
                         if (t.getTransactionDate().getMonthValue() == thisMonth) {
                             formattedMenuDisplay(t);
@@ -165,7 +206,7 @@ public class Main {
                     int lastMonth = today.getMonthValue() - 1;
                     int sameYear = today.getYear();
 
-                    System.out.println("-----");
+                    ledgerHeading();
                     for (Transaction t : transactions) {
                         if (t.getTransactionDate().getMonthValue() == lastMonth && t.getTransactionDate().getYear() == sameYear) {
                             formattedMenuDisplay(t);
@@ -176,7 +217,7 @@ public class Main {
                     //Year to date search
                     int thisYear = today.getYear();
 
-                    System.out.println("-----");
+                    ledgerHeading();
                     for (Transaction t : transactions) {
                         if (thisYear == t.getTransactionDate().getYear()) {
                             formattedMenuDisplay(t);
@@ -187,7 +228,7 @@ public class Main {
                     //last year search
                     int lastYear = today.getYear() - 1;
 
-                    System.out.println("-----");
+                    ledgerHeading();
                     for (Transaction t : transactions) {
                         if (t.getTransactionDate().getYear() == lastYear) {
                             formattedMenuDisplay(t);
@@ -200,12 +241,13 @@ public class Main {
                     System.out.println("Enter Vendor Name: ");
                     userInput = scanner.nextLine();
 
-                    System.out.println("-----");
+                    ledgerHeading();
                     for (Transaction t : transactions) {
                         if (t.getVendor().toLowerCase().contains(userInput.toLowerCase())) {
                             formattedMenuDisplay(t);
                         }
                     }
+
                     break;
                 case "0":
                     active = false;
@@ -225,7 +267,7 @@ public class Main {
             bufferedWriter.newLine();
             bufferedWriter.write(fullTransactionInfo);
             System.out.println("-----");
-            System.out.println("Your info has been processed");
+            System.out.println("✔ The record has been inscribed into the ledger.");
 
 
             bufferedWriter.close();
@@ -264,7 +306,7 @@ public class Main {
                 outPutTime = time.format(formatter);
                 break;
             } catch (DateTimeParseException e) {
-                System.out.println("INCORRECT FORMAT PLEASE ENTER(HH:mm:ss)");
+                System.out.println("✖ That is not a valid command, traveler this is(HH:mm:ss)");
             }
         }
 
